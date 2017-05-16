@@ -61,7 +61,7 @@ void PVD_IRQHandler(void)
 }
 void USB_LP_CAN1_RX0_IRQHandler(void)
 {
-	CanRx();
+	//-CanRx();
 }
 
 
@@ -131,13 +131,13 @@ void UART4_IRQHandler(void)///METER仪表
 	//OSIntEnter();
 	if(USART_GetITStatus(UART4, USART_IT_RXNE) != RESET)
 	{
-		g_meter_uart_struct.rx_buf[g_meter_uart_struct.rx_head] = USART_ReceiveData(UART4);
-		g_meter_uart_struct.rx_head = (g_meter_uart_struct.rx_head+1) % METER_UART_BUF_LEN;
+		//-g_meter_uart_struct.rx_buf[g_meter_uart_struct.rx_head] = USART_ReceiveData(UART4);
+		//-g_meter_uart_struct.rx_head = (g_meter_uart_struct.rx_head+1) % METER_UART_BUF_LEN;
 		
-		if(g_meter_uart_struct.rx_head == g_meter_uart_struct.rx_tail)
-		{//buff满，尾也向前移动
-			g_meter_uart_struct.rx_tail = (g_meter_uart_struct.rx_tail+1) % METER_UART_BUF_LEN;
-		}
+		//-if(g_meter_uart_struct.rx_head == g_meter_uart_struct.rx_tail)
+		//-{//buff满，尾也向前移动
+		//-	g_meter_uart_struct.rx_tail = (g_meter_uart_struct.rx_tail+1) % METER_UART_BUF_LEN;
+		//-}
 		
 	}
 	//OSIntExit();
@@ -151,13 +151,13 @@ void UART5_IRQHandler(void)///485
 	//OSIntEnter();
 	if(USART_GetITStatus(UART5, USART_IT_RXNE) != RESET)
 	{
-		g_rs485_uart_struct.rx_buf[g_rs485_uart_struct.rx_head] = USART_ReceiveData(UART5);
+		//-g_rs485_uart_struct.rx_buf[g_rs485_uart_struct.rx_head] = USART_ReceiveData(UART5);
 		
-		g_rs485_uart_struct.rx_head = (g_rs485_uart_struct.rx_head+1) % RS485_UART_BUF_LEN;		
-		if(g_rs485_uart_struct.rx_head == g_rs485_uart_struct.rx_tail)
-		{//buff满，尾也向前移动
-			g_rs485_uart_struct.rx_tail = (g_rs485_uart_struct.rx_tail+1) % RS485_UART_BUF_LEN;
-		}
+		//-g_rs485_uart_struct.rx_head = (g_rs485_uart_struct.rx_head+1) % RS485_UART_BUF_LEN;		
+		//-if(g_rs485_uart_struct.rx_head == g_rs485_uart_struct.rx_tail)
+		//-{//buff满，尾也向前移动
+		//-	g_rs485_uart_struct.rx_tail = (g_rs485_uart_struct.rx_tail+1) % RS485_UART_BUF_LEN;
+		//-}
 
 	}
 	//OSIntExit();

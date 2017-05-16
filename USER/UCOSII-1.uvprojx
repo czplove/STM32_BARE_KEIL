@@ -433,16 +433,6 @@
               <FileType>1</FileType>
               <FilePath>..\SYSTEM\delay\delay.c</FilePath>
             </File>
-            <File>
-              <FileName>sys.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\SYSTEM\sys\sys.c</FilePath>
-            </File>
-            <File>
-              <FileName>usart.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\SYSTEM\usart\usart.c</FilePath>
-            </File>
           </Files>
         </Group>
         <Group>
@@ -547,72 +537,10 @@
         </Group>
         <Group>
           <GroupName>UCOSII-CORE</GroupName>
-          <Files>
-            <File>
-              <FileName>os_core.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\UCOSII\CORE\os_core.c</FilePath>
-            </File>
-            <File>
-              <FileName>os_flag.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\UCOSII\CORE\os_flag.c</FilePath>
-            </File>
-            <File>
-              <FileName>os_mbox.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\UCOSII\CORE\os_mbox.c</FilePath>
-            </File>
-            <File>
-              <FileName>os_mem.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\UCOSII\CORE\os_mem.c</FilePath>
-            </File>
-            <File>
-              <FileName>os_mutex.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\UCOSII\CORE\os_mutex.c</FilePath>
-            </File>
-            <File>
-              <FileName>os_q.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\UCOSII\CORE\os_q.c</FilePath>
-            </File>
-            <File>
-              <FileName>os_sem.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\UCOSII\CORE\os_sem.c</FilePath>
-            </File>
-            <File>
-              <FileName>os_task.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\UCOSII\CORE\os_task.c</FilePath>
-            </File>
-            <File>
-              <FileName>os_time.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\UCOSII\CORE\os_time.c</FilePath>
-            </File>
-            <File>
-              <FileName>os_tmr.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\UCOSII\CORE\os_tmr.c</FilePath>
-            </File>
-          </Files>
         </Group>
         <Group>
           <GroupName>UCOSII-PORT</GroupName>
           <Files>
-            <File>
-              <FileName>os_cpu_a.asm</FileName>
-              <FileType>2</FileType>
-              <FilePath>..\UCOSII\PORT\os_cpu_a.asm</FilePath>
-            </File>
-            <File>
-              <FileName>os_cpu_c.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\UCOSII\PORT\os_cpu_c.c</FilePath>
-            </File>
             <File>
               <FileName>os_cpu.h</FileName>
               <FileType>5</FileType>
@@ -649,11 +577,6 @@
           <GroupName>src</GroupName>
           <Files>
             <File>
-              <FileName>tiza_spi_flash.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\src\tiza_spi_flash.c</FilePath>
-            </File>
-            <File>
               <FileName>tiza_driver.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\src\tiza_driver.c</FilePath>
@@ -662,51 +585,6 @@
               <FileName>tiza_selfdef.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\src\tiza_selfdef.c</FilePath>
-            </File>
-            <File>
-              <FileName>tiza_l218.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\src\tiza_l218.c</FilePath>
-            </File>
-            <File>
-              <FileName>tiza_business.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\src\tiza_business.c</FilePath>
-            </File>
-            <File>
-              <FileName>tiza_protocol.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\src\tiza_protocol.c</FilePath>
-            </File>
-            <File>
-              <FileName>tiza_can.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\src\tiza_can.c</FilePath>
-            </File>
-            <File>
-              <FileName>test.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\src\test.c</FilePath>
-            </File>
-            <File>
-              <FileName>tiza_flash.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\src\tiza_flash.c</FilePath>
-            </File>
-            <File>
-              <FileName>tiza_syspara.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\src\tiza_syspara.c</FilePath>
-            </File>
-            <File>
-              <FileName>tiza_systask.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\src\tiza_systask.c</FilePath>
-            </File>
-            <File>
-              <FileName>tiza_ftp.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\src\tiza_ftp.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -769,6 +647,9 @@
               <FilePath>..\inc\tiza_syspara.h</FilePath>
             </File>
           </Files>
+        </Group>
+        <Group>
+          <GroupName>interface</GroupName>
         </Group>
       </Groups>
     </Target>

@@ -130,7 +130,7 @@ void FeedWtd(void)
 ******************************************************/
 void SysReset(void)
 {
-	ProLsnalSysExit();		//检测是否有数据要压盲区
+//-	ProLsnalSysExit();		//检测是否有数据要压盲区
 	
 	while(1)
 	{
@@ -271,12 +271,12 @@ void GetCalendarTime(uint8 date_time[],uint8 flag)
 		date_time[0] = year - 2000;			///年
 	}
 	else{
-		date_time[0] = g_gps_struct.gpsinform.subitem.year;			///年
-		date_time[1] = g_gps_struct.gpsinform.subitem.month;		///得到月份
-		date_time[2] = g_gps_struct.gpsinform.subitem.day;  		///得到日期 	   
-		date_time[3] = g_gps_struct.gpsinform.subitem.hour;   	///小时
-		date_time[4] = g_gps_struct.gpsinform.subitem.minute; 	///分钟	
-		date_time[5] = g_gps_struct.gpsinform.subitem.second; 	///秒钟
+//-		date_time[0] = g_gps_struct.gpsinform.subitem.year;			///年
+//-		date_time[1] = g_gps_struct.gpsinform.subitem.month;		///得到月份
+//-		date_time[2] = g_gps_struct.gpsinform.subitem.day;  		///得到日期 	   
+//-		date_time[3] = g_gps_struct.gpsinform.subitem.hour;   	///小时
+//-		date_time[4] = g_gps_struct.gpsinform.subitem.minute; 	///分钟	
+//-		date_time[5] = g_gps_struct.gpsinform.subitem.second; 	///秒钟
 	}
 	
 //	#ifdef RTC_DEBUG
@@ -337,7 +337,7 @@ void RtcConfiguration(void)
 		if(i>0){
 			i--;
 			FeedWtd();
-			OSTimeDlyHMSM(0, 0, 0, 200);
+//-			OSTimeDlyHMSM(0, 0, 0, 200);
 //			LongTimeDly(2000);
 		}
 		else{
@@ -360,7 +360,7 @@ void RtcInit(void)
 	NVIC_InitTypeDef NVIC_InitStructure;
 	
 	RtcConfiguration();
-	RtcSetCalendarTime(g_protime_union.arry);
+//-	RtcSetCalendarTime(g_protime_union.arry);
 
 	NVIC_InitStructure.NVIC_IRQChannel = RTC_IRQn;
 	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 1 ;//抢占优先级1
@@ -814,15 +814,56 @@ void RS485UartFixedLenSend(uint8 data[],uint16 len)
 	uint16 i;
 	
 	ENABLE_TX485();
-	OSTimeDlyHMSM(0, 0, 0, 10);	
+//-	OSTimeDlyHMSM(0, 0, 0, 10);	
 	for(i=0;i<len;i++)
 	{
 		USART_SendData(RS485_USART,data[i]);
 		while(USART_GetFlagStatus(RS485_USART,USART_FLAG_TXE) == RESET);
 	}
-	OSTimeDlyHMSM(0, 0, 0, 10);	
+//-	OSTimeDlyHMSM(0, 0, 0, 10);	
 	ENABLE_RX485();
-	OSTimeDlyHMSM(0, 0, 0, 10);	
+//-	OSTimeDlyHMSM(0, 0, 0, 10);	
 }
 
+//Kbytes???Sector
+//16????1?Block
+//W25Q128
+//???16M??,??128?Block,4096?Sector 
+
+
+//???SPI FLASH
+uint8 ExteFlashInit(void)
+{
+  GPIO_InitTypeDef GPIO_InitStructure;
+
+  SPI_InitTypeDef  SPI_InitStructure;
+  RCC_APB2PeriphClockCmd(RCC_APB2Periph_SPI1 | RCC_APB2Periph_GPIOA, ENABLE);
+
+  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_5 | GPIO_Pin_6 | GPIO_Pin_7;
+  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;		
+  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+  GPIO_Init(GPIOA, &GPIO_InitStructure);
+  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_4;
+  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
+  GPIO_Init(GPIOA, &GPIO_InitStructure);
+
+  SPI_FRAM_CS_HIGH();
+
+  SPI_InitStructure.SPI_Direction = SPI_Direction_2Lines_FullDuplex;
+  SPI_InitStructure.SPI_Mode = SPI_Mode_Master;
+  SPI_InitStructure.SPI_DataSize = SPI_DataSize_8b;
+
+  SPI_InitStructure.SPI_CPOL = SPI_CPOL_Low;  ///?????
+  SPI_InitStructure.SPI_CPHA = SPI_CPHA_1Edge; ///????1???????
+  SPI_InitStructure.SPI_NSS = SPI_NSS_Soft;    ///NSS-??,?????
+  SPI_InitStructure.SPI_BaudRatePrescaler = SPI_BaudRatePrescaler_4;			//72/4=18MHZ
+  ///SPI_InitStructure.SPI_BaudRatePrescaler = SPI_BaudRatePrescaler_2;			///16/2=8MHZ
+
+  SPI_InitStructure.SPI_FirstBit = SPI_FirstBit_MSB;
+  SPI_InitStructure.SPI_CRCPolynomial = 7;
+  SPI_Init(SPI1, &SPI_InitStructure);
+
+  SPI_Cmd(SPI1, ENABLE);
+	return 1;
+}
 
