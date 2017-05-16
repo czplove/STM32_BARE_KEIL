@@ -118,6 +118,10 @@
 		uint16 rx_head;
 		uint16 rx_tail;
 		uint8 *rx_buf;
+		uint8  tx_flag;
+		uint16 tx_head;
+		uint16 tx_tail;
+		uint8 *tx_buf;
 	}USART_STRUCT;
 	
 	typedef struct
