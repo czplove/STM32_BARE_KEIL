@@ -1,7 +1,7 @@
 #ifndef __SELFDEF_H
 #define __SELFDEF_H
 
-#include <stdint.h>
+#include "stdint.h"
 
 	uint8 U8SumCheck(uint8 data[],uint16 len);
 	uint8 XorCheck(uint8 data[],uint16 len);

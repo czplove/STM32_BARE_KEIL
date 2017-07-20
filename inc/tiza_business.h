@@ -1,7 +1,7 @@
 #ifndef TIZA_BUSINESS_H
 #define TIZA_BUSINESS_H
 
-#include <stdint.h>
+#include "stdint.h"
 	
 	#ifdef BUSINESS_GLOABL
 		#define EXTERN_BUSINESS

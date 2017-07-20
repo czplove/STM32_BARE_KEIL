@@ -1,7 +1,7 @@
 #ifndef __TIZA_SPI_FLASH_H
 #define __TIZA_SPI_FLASH_H
 
-#include <stdint.h>
+#include "stdint.h"
 
 #ifdef SPI_FLASH_GLOBAL
 	#define EXTERN_SPI_FLASH

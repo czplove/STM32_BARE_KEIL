@@ -1,7 +1,7 @@
 #ifndef __TIZA_L218_H
 #define __TIZA_L218_H
 	
-#include <stdint.h>
+#include "stdint.h"
 
 		#ifdef L218_GLOBAL
 			#define L218_EXTERN
