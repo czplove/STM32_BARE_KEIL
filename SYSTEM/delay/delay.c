@@ -74,13 +74,21 @@ void delay_ostimedly(u32 ticks)
  
 //systick中断服务函数,使用ucos时用到
 void SysTick_Handler(void)
-{	
-	if(delay_osrunning==1)						//OS开始跑了,才执行正常的调度处理
-	{
-		OSIntEnter();										//进入中断
-		OSTimeTick();       						//调用ucos的时钟服务程序               
-		OSIntExit();       	 						//触发任务切换软中断
-	}
+{
+//	if(delay_osrunning==1)						//OS开始跑了,才执行正常的调度处理
+//	{
+//		OSIntEnter();										//进入中断
+//		OSTimeTick();       						//调用ucos的时钟服务程序               
+//		OSIntExit();       	 						//触发任务切换软中断
+//	}
+	
+	OS_ENTER_CRITICAL();
+    OSIntNesting++;
+    OS_EXIT_CRITICAL();
+
+    TicksInterrupt();
+
+    OSIntExit();
 }
 #endif
 

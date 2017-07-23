@@ -536,6 +536,18 @@
         </Group>
         <Group>
           <GroupName>UCOSII-CORE</GroupName>
+          <Files>
+            <File>
+              <FileName>RTOS.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\UCOSII\CORE\RTOS.c</FilePath>
+            </File>
+            <File>
+              <FileName>RTOS_ASM.s</FileName>
+              <FileType>2</FileType>
+              <FilePath>..\UCOSII\CORE\RTOS_ASM.s</FilePath>
+            </File>
+          </Files>
         </Group>
         <Group>
           <GroupName>UCOSII-PORT</GroupName>

@@ -10,6 +10,16 @@
 #include "includes.h"
 #include "tiza_include.h"
 
+//任务堆栈大小定义
+#define TASK0_TCB_SIZE 128
+#define TASK1_TCB_SIZE 128
+//任务堆栈定义
+u32 TASK0_STK[TASK0_TCB_SIZE];
+u32 TASK1_STK[TASK1_TCB_SIZE];
+//任务优先级定义
+#define Task0_Prio 0
+#define Task1_Prio 1
+
 
 
 /******************************************************
@@ -37,6 +47,31 @@ void System_Mode_Init(void)
 }
 
 
+
+
+
+void Task0(void *pdata)
+{
+	u8 i = 0;
+	while(1)
+	{
+		i++;
+//		PAout(8) ^= 1;
+		OSTimeDly(500);		
+	}
+}
+
+void Task1(void *pdata)
+{
+	while(1)
+	{
+//		PDout(2) ^= 1;
+		OSTimeDly(250);
+	}
+}
+
+
+
 /******************************************************
 Main函数
 ******************************************************/
@@ -46,14 +81,17 @@ int main(void)
 		NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);
 		FeedWtd();
 	
-		
-		System_Mode_Init(); 
-	
-	
-		while(1)
-		{
-		
-		}
+		OSTaskCreate(Task0, (void *)0, (u32 *)&TASK0_STK[TASK0_TCB_SIZE-1], Task0_Prio);
+		OSTaskCreate(Task1, (void *)0, (u32 *)&TASK1_STK[TASK1_TCB_SIZE-1], Task1_Prio);
+		OSStart();
+		return 0;
+//		System_Mode_Init(); 
+//	
+//	
+//		while(1)
+//		{
+//		
+//		}
 		
 }
 	
