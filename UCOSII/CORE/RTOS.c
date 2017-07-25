@@ -28,7 +28,7 @@ void OSTimeDly(u32 ticks)
 {
 	if(ticks > 0)
 	{
-		OS_ENTER_CRITICAL();				//进入临界区
+		OS_ENTER_CRITICAL();				//进入临界区，仅仅需要关闭中断，并回复部分参数就好
 		OSDelPrioRdy(OSPrioCur);			//将任务挂起
 		TCB[OSPrioCur].OSTCBDly = ticks;	//设置TCB中任务延时节拍数
 		OS_EXIT_CRITICAL();					//退出临界区
@@ -68,21 +68,21 @@ void OSSched(void)
 	}
 }
 /*任务创建*/
-void OSTaskCreate(void  (*Task)(void  *parg), void *parg, u32 *p_Stack, u8 TaskID)
+void OSTaskCreate(void  (*Task)(void  *parg), void *parg, u32 *p_Stack, u8 TaskID)	//-就是保存堆栈信息，以便CPU运行不同的程序
 {
-	if(TaskID <= OS_TASKS)
+	if(TaskID <= OS_TASKS)	//-判断任务优先级是否合理
 	{
-		*(p_Stack) = (u32)0x01000000L;					/*  xPSR                        */ 
-	    *(--p_Stack) = (u32)Task;						/*  Entry Point of the task  任务入口地址   */
+        *(p_Stack) = (u32)0x01000000L;					/*  xPSR  程序状态寄存器         */ 
+	    *(--p_Stack) = (u32)Task;								/*  Entry Point of the task  任务入口地址   */
 	    *(--p_Stack) = (u32)0xFFFFFFFEL;				/*  R14 (LR)  (init value will  */
 	                                                                           
 	    *(--p_Stack) = (u32)0x12121212L;				/*  R12                         */
 	    *(--p_Stack) = (u32)0x03030303L;				/*  R3                          */
 	    *(--p_Stack) = (u32)0x02020202L;				/*  R2                          */
 	    *(--p_Stack) = (u32)0x01010101L;				/*  R1                          */
-		*(--p_Stack) = (u32)parg;						/*  R0 : argument  输入参数     */
+			*(--p_Stack) = (u32)parg;								/*  R0 : argument  输入参数     */
 
-		*(--p_Stack) = (u32)0x11111111L;				/*  R11                         */
+			*(--p_Stack) = (u32)0x11111111L;				/*  R11                         */
 	    *(--p_Stack) = (u32)0x10101010L;				/*  R10                         */
 	    *(--p_Stack) = (u32)0x09090909L;				/*  R9                          */
 	    *(--p_Stack) = (u32)0x08080808L;				/*  R8                          */
@@ -91,9 +91,9 @@ void OSTaskCreate(void  (*Task)(void  *parg), void *parg, u32 *p_Stack, u8 TaskI
 	    *(--p_Stack) = (u32)0x05050505L;				/*  R5                          */
 	    *(--p_Stack) = (u32)0x04040404L;				/*  R4                          */
 
-		TCB[TaskID].OSTCBStkPtr = (u32)p_Stack;			/*保存堆栈地址*/
-		TCB[TaskID].OSTCBDly = 0;						/*初始化任务延时*/
-		OSSetPrioRdy(TaskID);							/*在任务就绪表中登记*/
+		TCB[TaskID].OSTCBStkPtr = (u32)p_Stack;		/*保存堆栈地址*/
+		TCB[TaskID].OSTCBDly = 0;									/*初始化任务延时*/
+		OSSetPrioRdy(TaskID);											/*在任务就绪表中登记*/
 	}
 }
 
@@ -147,7 +147,7 @@ void OSIntExit(void)
 	
 	if(OSIntNesting > 0)
 		OSIntNesting--;
-	if(OSIntNesting == 0)
+	if(OSIntNesting == 0)	//-没有中断嵌套时，才可以进行任务调度
 	{
 		OSGetHighRdy();					/*找出任务优先级最高的就绪任务*/
 		if(OSPrioHighRdy!=OSPrioCur)	/*当前任务并非优先级最高的就绪任务*/
@@ -155,7 +155,7 @@ void OSIntExit(void)
 			p_OSTCBCur = &TCB[OSPrioCur];
 			p_OSTCBHighRdy = &TCB[OSPrioHighRdy];
 			OSPrioCur = OSPrioHighRdy;
-			OSIntCtxSw();				/*中断级任务调度*/
+			OSIntCtxSw();				/*中断级任务调度*/	//-注意这里和OSCtxSw不一样，但是作用是一样的
 		}
 	}
 
