@@ -90,7 +90,7 @@ void OSTaskCreate(void  (*Task)(void  *parg), void *parg, u32 *p_Stack, u8 TaskI
 	    *(--p_Stack) = (u32)0x06060606L;				/*  R6                          */
 	    *(--p_Stack) = (u32)0x05050505L;				/*  R5                          */
 	    *(--p_Stack) = (u32)0x04040404L;				/*  R4                          */
-
+		//-上面的程序模拟程序被中断了，然后压栈的内容
 		TCB[TaskID].OSTCBStkPtr = (u32)p_Stack;		/*保存堆栈地址*/
 		TCB[TaskID].OSTCBDly = 0;									/*初始化任务延时*/
 		OSSetPrioRdy(TaskID);											/*在任务就绪表中登记*/
