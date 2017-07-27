@@ -157,11 +157,11 @@ PendSV_Handler													;跳转到这里时xPSR, PC, LR, R12, R0-R3 已自动保存
     CBZ     R0, PendSV_Handler_Nosave		                    ; Skip register save the first time，如果 PSP == 0，跳转到PendSV_Handler_Nosave
 																;PSP == 0说明 OSStartHighRdy()启动后第一次做任务切换，而任务刚创建时 R4-R11 已经保存在堆栈中了，所以不需要再保存一次了。
     SUBS    R0, R0, #0x20                                       ; Save remaining regs r4-11 on process stack，R0 -= 0x20并影响标志位
-    STM     R0, {R4-R11}										;R0现在指向了栈顶部，除去自动保存的8个寄存器偏移后保存这里的寄存器值
+    STM     R0, {R4-R11}										;R0现在指向了栈顶部，把r4-11的值保存到当前任务的私有堆栈中
 
     LDR     R1, =p_OSTCBCur                                     ; OSTCBCur->OSTCBStkPtr = SP;
     LDR     R1, [R1]											;获得了栈顶指针
-    STR     R0, [R1]                                            ; R0 is SP of process being switched out,任务控制块，需要记录新的参数，这里就是记录了当前任务的堆栈指针
+    STR     R0, [R1]                                            ; R0 is SP of process being switched out,任务控制块，需要记录新的参数，这里就是记录了当前任务的栈指针
 
                                                                 ; At this point, entire context of process has been saved
 PendSV_Handler_Nosave
@@ -178,16 +178,16 @@ PendSV_Handler_Nosave
     LDR     R0, =p_OSTCBCur                                     ; OSTCBCur  = OSTCBHighRdy;
     LDR     R1, =p_OSTCBHighRdy
     LDR     R2, [R1]
-    STR     R2, [R0]											;又一次对变量进行赋值，这里是任务控制块
+    STR     R2, [R0]											;又一次对变量进行赋值，这里是任务控制块,上面这两步指向了待运行任务控制块,以便准备新任务的运行
 																;下面开始获取新的任务的运行环境
     LDR     R0, [R2]                                            ; R0 is new process SP; SP = OSTCBHighRdy->OSTCBStkPtr;R0是准备运行的任务的SP
-    LDM     R0, {R4-R11}                                        ; Restore r4-11 from new process stack
-    ADDS    R0, R0, #0x20										;中间跳过的8个寄存器已经自动保存了
-    MSR     PSP, R0                                             ; Load PSP with new process SP
+    LDM     R0, {R4-R11}                                        ; Restore r4-11 from new process stack,这里需要手动恢复,硬件不自动出栈
+    ADDS    R0, R0, #0x20										;上面进行了8个寄存器的出栈,所以这里更新栈顶地址
+    MSR     PSP, R0                                             ; Load PSP with new process SP,加载栈顶地址
     ORR     LR, LR, #0x04                                       ; Ensure exception return uses process stack，确保 LR 位 2 为 1，返回后使用进程堆栈
-    CPSIE   I
-    BX      LR                                                  ; Exception return will restore remaining context
-
+    CPSIE   I													;开中断
+    BX      LR                                                  ; Exception return will restore remaining context,在异常中把LR值给PC,然后就启动了中断返回序列,比如出栈
+																;在出栈的时候会自动加载LR,这个时候就可以返回到原来的程序中继续执行了
 
 ;************************************************************
 		ALIGN

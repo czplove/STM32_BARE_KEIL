@@ -56,7 +56,7 @@ void Task0(void *pdata)
 	while(1)
 	{
 		i++;
-//		PAout(8) ^= 1;
+		PBout(12) ^= 1;
 		OSTimeDly(500);		
 	}
 }
@@ -65,7 +65,7 @@ void Task1(void *pdata)
 {
 	while(1)
 	{
-//		PDout(2) ^= 1;
+		PDout(13) ^= 1;
 		OSTimeDly(250);
 	}
 }
@@ -80,6 +80,14 @@ int main(void)
 		delay_init();
 		NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);
 		FeedWtd();
+	
+	//*********µÆ³õÊ¼»¯**********
+	RCC->APB2ENR |= 1<<3 | 1<<5;
+	GPIOB->CRH &= 0xFFF0FFFF;
+	GPIOB->CRH |= 0x00030000;
+	GPIOD->CRH &= 0xFF0FFFFF;
+	GPIOD->CRH |= 0x00300000;
+	//****************************
 	
 		OSTaskCreate(Task0, (void *)0, (u32 *)&TASK0_STK[TASK0_TCB_SIZE-1], Task0_Prio);
 		OSTaskCreate(Task1, (void *)0, (u32 *)&TASK1_STK[TASK1_TCB_SIZE-1], Task1_Prio);
